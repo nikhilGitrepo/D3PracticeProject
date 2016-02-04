@@ -11,6 +11,7 @@ var svg = d3.select('#cnv')
 				});
 
 var g = svg.append('g').attr({'transform':'translate('+ht/2+','+wid/2+') rotate(-30)'});
+//var g = svg.append('g').attr({'transform':'translate('+ht/2+','+wid/2+')'});
 
 var radius = [0,1,2,3,4];
 
@@ -18,7 +19,7 @@ radius = radius.reverse();
 
 var radius_scale = d3.scale.linear()
 					.domain([0,d3.max(radius,function(d){return d;})])
-					.range([1,200]);
+					.range([1,250]);
 
 var radar_circles = g.selectAll('circle')
 					.data(radius)
@@ -35,7 +36,7 @@ var radar_circles = g.selectAll('circle')
 
 var gpa_scale = d3.scale.linear()
 					.domain([0,4])
-					.range([0,200]);
+					.range([0,250]);
 
 var benchMarkData = [
 		{"key" : "GPA_CUMULATIVE" ,'value':gpa_scale(3)},
@@ -76,7 +77,7 @@ var all_axis = g.selectAll('.axis')
 
 var gpa_normal_scale = d3.scale.linear()
 						.domain([0,4])
-						.range([0,200]);
+						.range([0,250]);
 
 
 //---Rotating Axis to specific angle based on the number of Axes---------------
@@ -88,11 +89,13 @@ g.selectAll('.axis').each(function(d,i){
 	})
 });
 
-var axis_label_g = g.append('g');
+var axis_label_g = g.append('g')
+				//.attr('transform' , 'rotate(-30)');
 
 var radian_scale = d3.scale.linear()
 					.domain([0,benchMarkData.length])
 					.range([0,(2*Math.PI)]);
+
 
 // -------Axes labels----------------------
 
@@ -113,6 +116,7 @@ axis_label_g.selectAll('.axis-label')
 		return d.key;
 	});
 
+// --------COORDINATES PLOT-------------------
 var scatter_plot = g.append('g');
 
 scatter_plot.selectAll('.plot')
@@ -122,6 +126,7 @@ scatter_plot.selectAll('.plot')
 		.attr({
 			'class':'plot',
 			'cx':function(d,i){
+				console.log(d);
 				return Math.cos(-radian_scale(i))*d.value; 
 				},
 			'cy':function(d,i){ return Math.sin(-radian_scale(i))*d.value; },
@@ -152,7 +157,7 @@ var dataset = [[
 	{"key" : "R_ASN_SUB",'value' : 1}, 
 	{"key" : "R_FORUM_POST",'value' : 0.5},
 	{"key" : "RMN_SCORE",'value' : 97.9625}
-	],
+	]/*,
     [
     {"key" : "GPA_CUMULATIVE" ,'value':gpa_scale(3.8729)},
 	{"key" : "R_CONTENT_READ" ,'value':1.71056},
@@ -168,7 +173,7 @@ var dataset = [[
 	{"key" : "R_ASN_SUB" ,'value':1.7},
 	{"key" : "R_FORUM_POST" ,'value':2.0},
 	{"key" : "RMN_SCORE" ,'value':70.777}
-	]
+	]*/
 ];
 
 //----------Calculating of MAX values-------------
@@ -211,7 +216,7 @@ scales_array_max.forEach(function(d){
 		scale_functions.push({
 				key:d.key,
 				//value:d3.scale.linear().domain([0,d.value]).range([0,200]).clamp([true])
-				value:d3.scale.linear().domain([0,200]).range([0,200]).clamp([true])
+				value:d3.scale.linear().domain([0,250]).range([0,250]).clamp([true])
 			})
 })
 
@@ -276,4 +281,3 @@ var path = g.append('path')
 			});
 }
 
-//g.attr('transform','rotate(60)');
